@@ -1,11 +1,11 @@
 
 **Automatically track applications usage and working time.**
 
-> With IMS Agent you can go back in time and see what you were working on. You can get information on what apps were used - exactly at what time - and what title the application had at that moment. This is enough to determine how much you did something.
+> With IMSAgent you can go back in time and see what you were working on. You can get information on what apps were used - exactly at what time - and what title the application had at that moment. This is enough to determine how much you did something.
 
 **Track how you spent your time on a computer.**
 
-> IMS Agent tracks active applications usage and computer state. It records active application titles. It tracks idle, offline, and online state. You can see this data with a nice interactive timeline chart.
+> IMSAgent tracks active applications usage and computer state. It records active application titles. It tracks idle, offline, and online state. You can see this data with a nice interactive timeline chart.
 
 **Analyze your computer usage**
 
@@ -25,7 +25,7 @@
 
 ## Logs
 
-By default, IMS Agent writes logs to the following locations:
+By default, IMSAgent writes logs to the following locations:
 
 Linux: `~/.config/tockler/logs/main.log`
 

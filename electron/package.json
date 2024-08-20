@@ -2,7 +2,7 @@
     "name": "imsagent",
     "version": "3.21.19",
     "description": "Automatically track applications usage and working time",
-    "author": "IMS Agent <ims-agent@gmail.com>",
+    "author": "IMSAgent <ims-agent@gmail.com>",
     "license": "GPL-2.0",
     "main": "dist/index.js",
     "repository": {

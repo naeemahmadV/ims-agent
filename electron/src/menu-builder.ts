@@ -150,7 +150,7 @@ export default class MenuBuilder {
     }
 
     setupDevelopmentEnvironment() {
-        WindowManager.mainWindow.openDevTools();
+        //WindowManager.mainWindow.openDevTools();
 
         WindowManager.mainWindow.webContents.on('context-menu', (e, props) => {
             const { x, y } = props;

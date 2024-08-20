@@ -1,5 +1,5 @@
-appId: 'ee.trimatech.tockler'
-productName: 'IMS Agent'
+appId: 'ee.trimatech.imsagent'
+productName: 'IMSAgent'
 asar: true
 asarUnpack:
     - scripts
@@ -87,6 +87,6 @@ snap:
 dmg:
     sign: false
 protocols:
-    name: Tockler
+    name: IMSAgent
     schemes:
-        - tockler
+        - imsagent
