@@ -1,6 +1,6 @@
 {
     "name": "imsagent",
-    "version": "3.21.19",
+    "version": "1.1.0",
     "description": "Automatically track applications usage and working time",
     "author": "IMSAgent <ims-agent@gmail.com>",
     "license": "GPL-2.0",
