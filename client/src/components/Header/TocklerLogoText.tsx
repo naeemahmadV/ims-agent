@@ -4,7 +4,7 @@ import { Icon } from '@chakra-ui/icons';
 
 export const TocklerLogoText = props => (
     <Icon viewBox="0 0 84 25" width="84px" height="25px" {...props}>
-        <title>Tockler</title>
+        <title>IMS Agent</title>
         <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g
                 id="Header"

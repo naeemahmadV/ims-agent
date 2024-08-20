@@ -22,9 +22,9 @@ export const Header = ({ children, brandLinkProps }) => (
                     <Center pr={3}>
                         <TocklerLogo boxSize="28px" />
                     </Center>
-                    <Box pt="3px">
+                    {/* <Box pt="3px">
                         <TocklerLogoText />
-                    </Box>
+                    </Box> */}
                 </Flex>
             </Link>
         </Box>

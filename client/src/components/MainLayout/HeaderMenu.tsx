@@ -18,7 +18,7 @@ export const HeaderMenu = () => (
         <MenuItem to="/summary" icon={<AiOutlineAreaChart />} title="Summary" />
         <MenuItem to="/search" icon={<AiOutlineSearch />} title="Search" />
         <MenuItem to="/settings" icon={<AiOutlineSetting />} title="Settings" />
-        <MenuItem to="/support" icon={<AiOutlineQuestionCircle />} title="Support" />
+        {/* <MenuItem to="/support" icon={<AiOutlineQuestionCircle />} title="Support" /> */}
         {/*<MenuItem to="/trayPage" icon={<AiFillTrademarkCircle />} title="Tray" />*/}
         <Box flex="1" />
 

@@ -1,6 +1,6 @@
 appId: 'ee.trimatech.tockler'
 productName: 'Tockler'
-asar: false
+asar: true
 asarUnpack:
     - scripts
     - shared
@@ -57,11 +57,11 @@ win:
               - x64
               - ia32
               - arm64
-        - target: portable
-          arch:
-              - x64
-              - ia32
-              - arm64
+        # - target: portable
+        #   arch:
+        #       - x64
+        #       - ia32
+        #       - arm64
 
 nsis:
     artifactName: ${name}-${version}-setup-${os}-${arch}.${ext}
