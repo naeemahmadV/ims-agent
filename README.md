@@ -27,11 +27,11 @@
 
 By default, IMSAgent writes logs to the following locations:
 
-Linux: `~/.config/tockler/logs/main.log`
+Linux: `~/.config/IMSAgent/logs/main.log`
 
-macOS: `~/Library/Logs/tockler/main.log`
+macOS: `~/Library/Logs/IMSAgent/main.log`
 
-Windows: `%USERPROFILE%\AppData\Roaming\tockler\logs\main.log`
+Windows: `%USERPROFILE%\AppData\Roaming\IMSAgent\logs\main.log`
 
 ## Development
 
@@ -40,7 +40,7 @@ Windows: `%USERPROFILE%\AppData\Roaming\tockler\logs\main.log`
 > Prerequisites: [Node](https://nodejs.org/), [Git](https://git-scm.com/).
 
 ```bash
-git clone https://github.com/Maygo/tockler.git  # Download this project
+git clone https://github.com/ims-agent.git  # Download this project
 
 npm install yarn -g     # install yarn or binary from https://yarnpkg.com
 ```

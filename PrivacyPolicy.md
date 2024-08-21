@@ -8,7 +8,7 @@ We use [Google Analytics](https://policies.google.com/privacy) for crash reports
 
 ### Analytics
 
-We use [Sentry](https://sentry.io/privacy/) for crash reports. This helps us improve the app and fix bugs. Tockler
+We use [Sentry](https://sentry.io/privacy/) for crash reports. This helps us improve the app and fix bugs. IMSAgent
 will collect sanitized technical data, including device and operating system information, which will help us understand why IMSAgent has crashed. We do not collect the IP address or a unique identifier of the user.
 
 ### Consent
