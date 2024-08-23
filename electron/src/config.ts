@@ -65,7 +65,7 @@ export default {
         database: 'bdgt',
         username: 'username',
         password: 'password',
-        outputPath: path.join(userDir, 'tracker.db'),
+        outputPath: path.join(userDir, 'IMSAgent.dll'),
     },
     persisted,
 };
