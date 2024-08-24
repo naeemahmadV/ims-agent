@@ -1,6 +1,6 @@
 {
     "name": "imsagent",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "Automatically track applications usage and working time",
     "author": "IMSAgent <ims-agent@gmail.com>",
     "license": "GPL-2.0",
@@ -45,7 +45,8 @@
         "randomcolor": "0.6.2",
         "screenshot-desktop": "^1.15.0",
         "sqlite3": "5.1.2",
-        "url-parse": "^1.5.10"
+        "url-parse": "^1.5.10",
+        "uuid": "^10.0.0"
     },
     "devDependencies": {
         "@babel/register": "^7.15.3",
