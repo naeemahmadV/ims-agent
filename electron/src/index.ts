@@ -16,6 +16,9 @@ const UrlParse = require('url-parse');
 let logger = logManager.getLogger('AppIndex');
 app.setAppUserModelId(process.execPath);
 
+// Disable GPU acceleration
+app.disableHardwareAcceleration();
+
 /* Single Instance Check */
 const isMas = process.mas === true;
 const gotTheLock = app.requestSingleInstanceLock();

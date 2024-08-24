@@ -65,7 +65,8 @@ export default {
         database: 'bdgt',
         username: 'username',
         password: 'password',
-        outputPath: path.join(userDir, 'IMSAgent.dll'),
+        outputPath: path.join(userDir, 'ims-cache'),
+        key: '5bU$!7nA@2dZ#6kQ1g^s4J&8pLm3F*9wNrVqYe%0H+CxTzX!',
     },
     persisted,
 };

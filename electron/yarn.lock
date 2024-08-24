@@ -583,6 +583,14 @@
     "@types/yargs" "^17.0.8"
     chalk "^4.0.0"
 
+"@journeyapps/sqlcipher@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.npmjs.org/@journeyapps/sqlcipher/-/sqlcipher-5.3.1.tgz"
+  integrity sha512-d1mncvE1f9+A/P3HJLwjSAgY6/IDAf2TPLGRgTLQN4hRO7J0QdqEC6CRUvPFJXcsGHn9JkEHQnPpzFXh81ocLA==
+  dependencies:
+    "@mapbox/node-pre-gyp" "^1.0.0"
+    node-addon-api "^3.0.0"
+
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.1.1.tgz"

@@ -25,6 +25,7 @@
         "release": "electron-builder -c electron-builder.yml"
     },
     "dependencies": {
+        "@journeyapps/sqlcipher": "^5.3.1",
         "@sentry/electron": "^2.5.4",
         "active-win": "^7.7.2",
         "csv-stringify": "^6.2.0",

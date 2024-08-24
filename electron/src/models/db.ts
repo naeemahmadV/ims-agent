@@ -19,7 +19,18 @@ export async function connectAndSync() {
             user: dbConfig.username,
             password: dbConfig.password,
         },
+        asyncStackTraces: true,
     });
+
+        // Apply the encryption key once after the connection is established
+        await knexInstance.raw(`PRAGMA key = '${dbConfig.key}';`)
+        .then(() => {
+            console.log('Database encrypted and connection secured.');
+        })
+        .catch(error => {
+            console.error('Error setting encryption key: ', error);
+        });
+
 
     // Give the knex instance to objection.
     Model.knex(knexInstance);

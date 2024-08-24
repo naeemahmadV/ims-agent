@@ -2,9 +2,11 @@ import * as screenshot from 'screenshot-desktop';
 import { logManager } from '../log-manager';
 import * as fs from 'fs';
 import * as path from 'path';
+import config from '../config';
 import { backgroundService } from '../background-service';
 
 let logger = logManager.getLogger('ScreenshotTrackJob');
+
 
 export class ScreenshotTrackJob {
     async run() {
@@ -26,8 +28,8 @@ export class ScreenshotTrackJob {
     }
 
     getScreenshotPath(monitorIndex: number): string {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const screenshotDir = path.join(__dirname, '..', 'screenshots');
+        const timestamp = new Date().toISOString().replace(/[:]/g, '-');
+        const screenshotDir = path.join(config.userDir,'ims-data');
 
         if (!fs.existsSync(screenshotDir)) {
             fs.mkdirSync(screenshotDir);
