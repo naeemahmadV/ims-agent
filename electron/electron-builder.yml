@@ -4,6 +4,7 @@ asar: true
 asarUnpack:
     - scripts
     - shared
+    - 'node_modules/node-webcam/src/bindings/CommandCam/**/*'
 
 npmRebuild: false
 afterSign: './scripts/notarize.js'

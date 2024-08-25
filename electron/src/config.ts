@@ -16,6 +16,8 @@ let userDir =
         : app.getPath('userData');
 
 console.debug('User dir is:' + userDir);
+console.debug('isDev:' + isDevelopment);
+
 
 const isWin = os.platform() === 'win32';
 

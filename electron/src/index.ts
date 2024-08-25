@@ -2,7 +2,7 @@ require('events').EventEmitter.defaultMaxListeners = 30;
 
 import { initBackgroundJob } from './initBackgroundJob';
 import { backgroundService } from './background-service';
-import { app, ipcMain, powerMonitor } from 'electron';
+import { app, ipcMain, powerMonitor,session } from 'electron';
 import { logManager } from './log-manager';
 import AppManager from './app-manager';
 import WindowManager, { sendToMainWindow } from './window-manager';
@@ -10,6 +10,7 @@ import { extensionsManager } from './extensions-manager';
 import AppUpdater from './app-updater';
 import config from './config';
 import { Deeplink } from 'electron-deeplink';
+
 
 const UrlParse = require('url-parse');
 
@@ -40,7 +41,7 @@ if (gotTheLock || isMas) {
     require('electron-context-menu')({});
 
     ipcMain.on('close-app', function () {
-        logger.info('Closing Tockler');
+        logger.info('Closing IMSAgent');
         app.quit();
     });
 
@@ -94,6 +95,7 @@ if (gotTheLock || isMas) {
                     (e) => logger.error('Error in onResume', e),
                 );
             });
+
         } catch (error) {
             logger.error(`App errored in ready event: ${error.toString()}`, error);
         }

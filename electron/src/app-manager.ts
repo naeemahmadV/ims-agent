@@ -20,7 +20,7 @@ const theThemeHasChanged = () => {
 export default class AppManager {
     static knexInstance;
     static async init() {
-        logger.info('Intializing Tockler');
+        logger.info('Intializing IMSAgent');
         initIpcActions();
 
         logger.debug('Database syncing....');

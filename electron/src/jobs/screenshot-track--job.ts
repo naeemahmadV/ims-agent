@@ -1,12 +1,7 @@
 import * as screenshot from 'screenshot-desktop';
-import { logManager } from '../log-manager';
 import * as fs from 'fs';
 import * as path from 'path';
-import config from '../config';
-import { backgroundService } from '../background-service';
-
-let logger = logManager.getLogger('ScreenshotTrackJob');
-
+import { app } from 'electron';
 
 export class ScreenshotTrackJob {
     async run() {
@@ -16,36 +11,24 @@ export class ScreenshotTrackJob {
             screenshots.forEach((imgBuffer, index) => {
                 const filePath = this.getScreenshotPath(index);
                 fs.writeFileSync(filePath, imgBuffer); // Save screenshot to disk
-                logger.debug(`Screenshot saved: ${filePath}`);
-
-               // this.saveScreenshotInfo(filePath);
+                console.log(`Screenshot saved: ${filePath}`);
             });
 
-            logger.debug('Screenshot Job ran successfully.');
+            console.log('Screenshot Job ran successfully.');
         } catch (error) {
-            logger.error('Error in Screenshot Job: ' + error.toString(), error);
+            console.error('Error in Screenshot Job: ' + error.toString(), error);
         }
     }
 
     getScreenshotPath(monitorIndex: number): string {
         const timestamp = new Date().toISOString().replace(/[:]/g, '-');
-        const screenshotDir = path.join(config.userDir,'ims-data');
+        const screenshotDir = path.join(app.getPath('userData'), 'ims-data');
 
         if (!fs.existsSync(screenshotDir)) {
-            fs.mkdirSync(screenshotDir);
+            fs.mkdirSync(screenshotDir, { recursive: true });
         }
 
         return path.join(screenshotDir, `screen-${monitorIndex}-${timestamp}.png`);
-    }
-
-    async saveScreenshotInfo(filePath: string) {
-        const screenshotInfo = {
-            filePath: filePath,
-            timestamp: new Date(),
-        };
-
-        // Save screenshot information to the database or perform other actions
-        await backgroundService.createOrUpdate(screenshotInfo);
     }
 }
 
