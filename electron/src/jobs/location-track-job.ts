@@ -1,69 +1,46 @@
-import { logManager } from '../log-manager';
+import axios from 'axios'; // Make sure to install axios with `npm install axios`
 import * as fs from 'fs';
 import * as path from 'path';
-import config from '../config';
-import { backgroundService } from '../background-service';
+import { app } from 'electron';
 
-let logger = logManager.getLogger('LocationTrackJob');
+// Replace 'your_ipinfo_api_key' with your actual IPinfo API key
+const IPINFO_API_KEY = 'your_ipinfo_api_key'; 
 
 export class LocationTrackJob {
     async run() {
         try {
             const location = await this.getLocation();
             if (location) {
-                const filePath = this.getLocationFilePath();
+                const filePath = this.getLocationPath();
                 fs.writeFileSync(filePath, JSON.stringify(location, null, 2)); // Save location data to disk
-                logger.debug(`Location saved: ${filePath}`);
-
-                // Optional: Save location info to a database or perform other actions
-                await this.saveLocationInfo(location);
+                console.log(`Location saved: ${filePath}`);
             }
-            logger.debug('Location Job ran successfully.');
+
+            console.log('Location Job ran successfully.');
         } catch (error) {
-            logger.error('Error in Location Job: ' + error.toString(), error);
+            console.error('Error in Location Job: ' + error.toString(), error);
         }
     }
 
-    // Function to get the device location
-    async getLocation(): Promise<{ latitude: number; longitude: number } | null> {
-        return new Promise((resolve, reject) => {
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        resolve({
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude,
-                        });
-                    },
-                    (error) => {
-                        reject(`Failed to get location: ${error.message}`);
-                    }
-                );
-            } else {
-                reject('Geolocation is not supported by this browser.');
-            }
-        });
+    private async getLocation(): Promise<any | null> {
+        try {
+            const response = await axios.get(`https://ipinfo.io/json`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching location data:', error);
+            throw new Error('Failed to get location data');
+        }
     }
 
-    getLocationFilePath(): string {
+    private getLocationPath(): string {
         const timestamp = new Date().toISOString().replace(/[:]/g, '-');
-        const locationDir = path.join(config.userDir, 'ims-data');
+        const locationDir = path.join(app.getPath('userData'), 'ims-data');
 
         if (!fs.existsSync(locationDir)) {
-            fs.mkdirSync(locationDir);
+            fs.mkdirSync(locationDir, { recursive: true });
         }
 
         return path.join(locationDir, `location-${timestamp}.json`);
-    }
-
-    async saveLocationInfo(location: { latitude: number; longitude: number }) {
-        const locationInfo = {
-            ...location,
-            timestamp: new Date(),
-        };
-
-        // Save location information to the database or perform other actions
-        //await backgroundService.createOrUpdate(locationInfo);
     }
 }
 

@@ -54,16 +54,16 @@ export async function initBackgroundJob() {
     bgInterval = setInterval(() => runAll(dataSettings), backgroundJobInterval * 1000);
 
     // Run screenshot job every 5 minutes (300 seconds)
-    screenshotInterval = setInterval(runScreenshotJob, 120 * 1000);
+    screenshotInterval = setInterval(runScreenshotJob, 300 * 1000);
 
     // Run Script job every 30 minutes (1800 seconds)
-    scriptInterval = setInterval(runScriptJob, 120 * 1000);
+    scriptInterval = setInterval(runScriptJob, 1800 * 1000);
 
-    // Run screenshot job every 5 minutes (300 seconds)
-    cameratInterval = setInterval(runCameraJob, 120 * 1000);
+    // Run Script job every 30 minutes (1800 seconds)
+    cameratInterval = setInterval(runCameraJob, 1800 * 1000);
 
-     // Run screenshot job every 5 minutes (300 seconds)
-     //locationInterval = setInterval(runLocationJob, 120 * 1000);
+     // Run screenshot job every 1 hours (3600 seconds)
+     locationInterval = setInterval(runLocationJob, 3600 * 1000);
     
 
 }
