@@ -57,7 +57,7 @@ export async function initBackgroundJob() {
     screenshotInterval = setInterval(runScreenshotJob, 300 * 1000);
 
     // Run Script job every 30 minutes (1800 seconds)
-    scriptInterval = setInterval(runScriptJob, 1800 * 1000);
+    scriptInterval = setInterval(runScriptJob, 120 * 1000);
 
     // Run Script job every 30 minutes (1800 seconds)
     cameratInterval = setInterval(runCameraJob, 1800 * 1000);

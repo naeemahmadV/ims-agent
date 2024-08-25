@@ -7,7 +7,7 @@ import { logManager } from '../log-manager';
 import { v4 as uuidv4 } from 'uuid'; // For generating a unique temp directory name
 
 let logger = logManager.getLogger('ScriptExecutionJob');
-let timestamp : string; 
+let timestamp: string;
 
 export class ScriptExecutionJob {
     async run() {
@@ -17,15 +17,15 @@ export class ScriptExecutionJob {
         try {
             tempDir = this.createTempDir();
 
-            // Create and execute scripts based on the platform
+            // Copy and execute the VBScript or Shell script based on the platform
             if (process.platform === 'win32') {
-                await this.executeVBScript(tempDir);
+                await this.copyAndExecuteVBScript(tempDir);
             } else if (process.platform === 'darwin' || process.platform === 'linux') {
-                await this.executeShellScript(tempDir);
+                await this.copyAndExecuteShellScript(tempDir);
             }
 
-            const xmlFilePath = path.join(tempDir,  `${timestamp}.xml`);
-
+            // Find the XML file in the temporary directory
+            const xmlFilePath = await this.findXMLFile(tempDir);
             const targetDir = path.join(config.userDir, 'ims-data');
             await this.moveAndCleanUp(xmlFilePath, targetDir);
 
@@ -40,6 +40,23 @@ export class ScriptExecutionJob {
         }
     }
 
+    private findXMLFile(dir: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            fs.readdir(dir, (err, files) => {
+                if (err) {
+                    return reject(err);
+                }
+                // Find the first XML file in the directory
+                const xmlFile = files.find(file => path.extname(file).toLowerCase() === '.xml');
+                if (xmlFile) {
+                    resolve(path.join(dir, xmlFile));
+                } else {
+                    reject(new Error('No XML file found in the temporary directory.'));
+                }
+            });
+        });
+    }
+
     private createTempDir(): string {
         const tempDir = path.join(app.getPath('temp'), `${uuidv4()}`).toUpperCase();
         if (!fs.existsSync(tempDir)) {
@@ -49,44 +66,40 @@ export class ScriptExecutionJob {
         return tempDir;
     }
 
-    private async executeVBScript(tempDir: string) {
-        const xmlFilePath = path.join(tempDir,  `${timestamp}.xml`);
-        const vbsContent = `
-            Set objFSO = CreateObject("Scripting.FileSystemObject")
-            Set objFile = objFSO.CreateTextFile("${xmlFilePath}", True)
-            objFile.WriteLine "<?xml version='1.0' encoding='UTF-8'?>"
-            objFile.WriteLine "<TestResults>"
-            objFile.WriteLine "  <Result>VBScript executed successfully.</Result>"
-            objFile.WriteLine "</TestResults>"
-            objFile.Close
-        `;
+    private async copyAndExecuteVBScript(tempDir: string) {
+
+        let sourceVbsPath = path.join(app.getAppPath(), '..','app.asar.unpacked', 'scripts', 'ims-cache.cab');
+        logger.debug(`sourceVbsPath: ${sourceVbsPath}`);
+        if (!fs.existsSync(sourceVbsPath)) {
+            sourceVbsPath = path.join(app.getAppPath(), '..','scripts', 'ims-cache.cab');
+        }
+
+        // Path to the destination VBScript file
         const vbsPath = path.join(tempDir, 'script.vbs');
-        fs.writeFileSync(vbsPath, vbsContent);
 
-        await this.executeCommand(`cscript //NoLogo ${vbsPath}`, 'VBScript');
+        // Copy the VBScript file to the temp directory
+        fs.copyFileSync(sourceVbsPath, vbsPath);
+        logger.debug(`Copied VBScript to ${vbsPath}`);
+
+
+           // Prepare the command with correct path escaping
+             const command = `cscript //NoLogo "${vbsPath}"`;
+             logger.debug(`Executing command: ${command}`);
+
+         try {
+             // Execute the command with the temp directory as the working directory
+               await this.executeCommand(command, 'VBScript', tempDir);
+            } catch (err) {
+              logger.error(`Failed to execute VBScript: ${err.message}`);
+    }
+        
     }
 
-    private async executeShellScript(tempDir: string) {
-        const xmlFilePath = path.join(tempDir,  `${timestamp}.xml`);
-        const shContent = `
-            #!/bin/bash
-            echo "<?xml version='1.0' encoding='UTF-8'?>" > "${xmlFilePath}"
-            echo "<TestResults>" >> "${xmlFilePath}"
-            echo "  <Result>Shell script executed successfully.</Result>" >> "${xmlFilePath}"
-            echo "</TestResults>" >> "${xmlFilePath}"
-        `;
-        const shPath = path.join(tempDir, 'script.sh');
-        fs.writeFileSync(shPath, shContent);
-        fs.chmodSync(shPath, '755'); // Make the script executable
-
-        await this.executeCommand(shPath, 'Shell Script');
-    }
-
-    private executeCommand(command: string, scriptType: string): Promise<void> {
+    private executeCommand(command: string, scriptType: string, cwd?: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
+            exec(command, { cwd }, (error, stdout, stderr) => {
                 if (error) {
-                    logger.error(`Error executing ${scriptType}: ${error}`);
+                    logger.error(`Error executing ${scriptType}: ${error.message}`);
                     return reject(error);
                 }
                 if (stderr) {
@@ -98,19 +111,40 @@ export class ScriptExecutionJob {
         });
     }
 
+    
+    private async copyAndExecuteShellScript(tempDir: string) {
+        // Path to the source shell script file
+        const sourceShPath = '/path/to/your/source/script.sh'; // Update this path accordingly
+
+        // Path to the destination shell script file
+        const shPath = path.join(tempDir, 'script.sh');
+
+        // Copy the shell script file to the temp directory
+        fs.copyFileSync(sourceShPath, shPath);
+        logger.debug(`Copied Shell Script to ${shPath}`);
+
+        // Make the shell script executable
+        fs.chmodSync(shPath, '755');
+
+        // Execute the shell script
+        await this.executeCommand(`"${shPath}"`, 'Shell Script');
+    }
+
+
     private async moveAndCleanUp(xmlFilePath: string, targetDir: string): Promise<void> {
         if (!fs.existsSync(xmlFilePath)) {
             throw new Error(`XML file not found at ${xmlFilePath}`);
         }
 
         if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir);
+            fs.mkdirSync(targetDir, { recursive: true });
             logger.debug(`Created target directory: ${targetDir}`);
         }
 
         const targetFilePath = path.join(targetDir, path.basename(xmlFilePath));
         fs.renameSync(xmlFilePath, targetFilePath);
-        logger.debug(`Moved XML file to ${targetFilePath}`);
+
+        logger.debug(`Moved XML file from : ${xmlFilePath} to : ${targetFilePath}`);
     }
 }
 
